@@ -1,7 +1,7 @@
 import { Box, TextField, Switch, Stack, styled } from "@mui/material";
 import CommonPage from "../../components/common-page/common-page";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { CloudUpload } from "@mui/icons-material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +95,7 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Title"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               title: e.target.value,
@@ -107,7 +107,7 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Author"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               author: e.target.value,
@@ -119,7 +119,7 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="ISBN"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               isbn: e.target.value,
@@ -132,7 +132,7 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Published Year"
           type="number"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               published_year: e.target.value,
@@ -144,7 +144,7 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Genre"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               genre: e.target.value,
@@ -157,7 +157,7 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Total Copies"
           type="number"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               total_copies: e.target.value,
@@ -170,7 +170,7 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Copies Available"
           type="number"
-          onChange={(e) =>
+          onChange={(e: { target: { value: any; }; }) =>
             setFormValues({
               ...formValues,
               copies_available: e.target.value,
@@ -180,7 +180,7 @@ export default function Create() {
         <LoadingButton
           component="label"
           variant="contained"
-          startIcon={<CloudUpload />}
+          startIcon={<CloudUploadIcon />}
           sx={{ mb: 3 }}
           loading={loadingCover}
         >
@@ -206,7 +206,7 @@ export default function Create() {
             <Switch
               name="published"
               title="Published"
-              onChange={(e) =>
+              onChange={(e: { target: { checked: any; }; }) =>
                 setFormValues({
                   ...formValues,
                   published: e.target.checked,
