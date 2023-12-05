@@ -1,14 +1,10 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import { BooksList, BooksCreate } from './pages/books';
 import Login from './pages/Login';
 
-const theme = createTheme({
-  status: {
-    danger: orange[500],
-  },
-});
+const theme = createTheme();
 
 const router = createBrowserRouter([
   {
