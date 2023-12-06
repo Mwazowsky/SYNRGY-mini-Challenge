@@ -1,29 +1,44 @@
 import { Box, TextField, Switch, Stack, styled } from "@mui/material";
-import CommonPage from "../../components/common-page/common-page";
-import { ChangeEvent, FormEvent, useState } from "react";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CommonPage from "../../../components/common-page/common-page";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const VisuallyHiddenInput = styled("input")`
-  display: none;
-`;
+import { VisuallyHiddenInput } from "./update.styled";
+import { IFileItem } from "../../../services/types";
 
-interface IFileItem {
-  url: string;
-  secure_url: string;
-  width?: number;
-  height?: number;
-  resourceType?: string;
-}
-
-export default function Create() {
+export default function Update() {
+  const { id } = useParams(); // Using useParams within the functional component
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({});
   const [loadingCover, setLoadingCover] = useState<boolean>(false);
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
   const [fileItem, setFileItem] = useState<IFileItem>();
+
+  useEffect(() => {
+    const fetchBookData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/books/${id}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        const bookData = response.data.data;
+        setFormValues(bookData);
+      } catch (error) {
+        console.log("error > ", error);
+      }
+    };
+
+    fetchBookData();
+  }, [id]);
+
+  console.log("bookData > ", formValues);
 
   const handleUploadCover = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -56,7 +71,7 @@ export default function Create() {
     try {
       setLoadingSubmit(true);
       const payload = { ...formValues, cover: fileItem };
-      await axios.post("http://localhost:8000/api/books", payload, {
+      await axios.put(`http://localhost:8000/api/books/${id}`, payload, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -95,7 +110,8 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Title"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.title || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               title: e.target.value,
@@ -107,7 +123,8 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Author"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.author || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               author: e.target.value,
@@ -119,7 +136,8 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="ISBN"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.isbn || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               isbn: e.target.value,
@@ -132,7 +150,8 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Published Year"
           type="number"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.published_year || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               published_year: e.target.value,
@@ -144,7 +163,8 @@ export default function Create() {
           size="small"
           sx={{ width: "100%", mb: 3 }}
           label="Genre"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.genre || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               genre: e.target.value,
@@ -157,7 +177,8 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Total Copies"
           type="number"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.total_copies || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               total_copies: e.target.value,
@@ -170,7 +191,8 @@ export default function Create() {
           sx={{ width: "100%", mb: 3 }}
           label="Copies Available"
           type="number"
-          onChange={(e: { target: { value: any; }; }) =>
+          value={formValues.copies_available || ""}
+          onChange={(e: { target: { value: any } }) =>
             setFormValues({
               ...formValues,
               copies_available: e.target.value,
@@ -191,22 +213,28 @@ export default function Create() {
             onChange={handleUploadCover}
           />
         </LoadingButton>
-        {fileItem && fileItem.url && (
+        {formValues && formValues.cover && (
           <Box>
             <img
-              src={fileItem.secure_url}
+              src={
+                fileItem
+                  ? fileItem.secure_url
+                  : formValues.cover["secure_url"]
+              }
               alt="preview"
               style={{ width: "100%", objectFit: "cover" }}
             />
           </Box>
         )}
+
         <Box>
           <Stack direction={"row"} alignItems={"center"}>
             <div>Publish</div>
             <Switch
               name="published"
               title="Published"
-              onChange={(e: { target: { checked: any; }; }) =>
+              checked={formValues && formValues.published}
+              onChange={(e: { target: { checked: any } }) =>
                 setFormValues({
                   ...formValues,
                   published: e.target.checked,
