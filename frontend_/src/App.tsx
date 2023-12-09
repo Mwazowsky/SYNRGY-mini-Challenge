@@ -1,41 +1,21 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
+import { useRoutes } from "react-router-dom";
+import router from "src/router";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-import { BooksList, BooksCreate, BooksUpdate } from "./pages/books";
-import Login from "./pages/Login";
+import ThemeProviderWrapper from "src/theme/ThemeProvider";
 
-const theme = createTheme();
+function App() {
+  const content = useRoutes(router);
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <BooksList />,
-  },
-
-  {
-    path: "/create",
-    element: <BooksCreate />,
-  },
-
-  {
-    path: "/update/:car_id",
-    element: <BooksUpdate />,
-  },
-
-  {
-    path: "/login",
-    element: <Login />,
-  },
-]);
-
-export default function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <ThemeProviderWrapper>
+        <CssBaseline />
+        {content}
+      </ThemeProviderWrapper>
     </LocalizationProvider>
   );
 }
+export default App;

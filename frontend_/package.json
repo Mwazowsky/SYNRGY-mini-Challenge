@@ -20,12 +20,17 @@
     "@types/axios": "^0.14.0",
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
+    "nprogress": "^0.2.0",
+    "numeral": "^2.0.6",
     "react": "^18.2.0",
+    "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.3",
     "react-router-dom": "^6.20.0",
     "styled-components": "^6.1.1"
   },
   "devDependencies": {
+    "@types/numeral": "^2.0.5",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
